@@ -29,7 +29,7 @@ template("skia_wasm_lib") {
 
   _lib_name = target_name
 
-  executable("${_lib_name}_js") {
+  static_library("${_lib_name}_js") {
     forward_variables_from(invoker, _vars_to_forward)
     output_extension = "js"
     output_name = "${_lib_name}"

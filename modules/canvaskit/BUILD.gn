@@ -115,38 +115,6 @@ skia_wasm_lib("canvaskit") {
   if (skia_canvaskit_enable_embedded_font) {
     deps += [ ":create_notomono_cpp" ]
   }
-
-  sources = [
-    "WasmCommon.h",
-    "canvaskit_bindings.cpp",
-  ]
-  if (skia_canvaskit_enable_paragraph) {
-    sources += [
-      "paragraph_bindings.cpp",
-      "paragraph_bindings_gen.cpp",
-    ]
-  }
-  if (skia_enable_skottie) {
-    sources += [
-      "../../modules/skottie/utils/SkottieUtils.cpp",
-      "../../modules/skottie/utils/TextEditor.cpp",
-      "../../modules/skresources/src/SkResources.cpp",
-      "skottie_bindings.cpp",
-    ]
-  }
-  if (skia_canvaskit_include_viewer) {
-    sources += [ "viewer_bindings.cpp" ]
-    # TODO(kjlubick): remove this
-  }
-  if (skia_canvaskit_enable_debugger) {
-    sources += [ "debugger_bindings.cpp" ]
-    deps += [ ":debugger" ]
-  }
-  if (skia_canvaskit_enable_embedded_font) {
-    sources += [
-      "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
-    ]
-  }
  
   cflags = [
     "-sSHARED_MEMORY=1",
@@ -157,7 +125,7 @@ skia_wasm_lib("canvaskit") {
     "-pthread",
     "-fwasm-exceptions",
   ]
-  
+
   if (is_debug) {
     ldflags += [
       "-O0",

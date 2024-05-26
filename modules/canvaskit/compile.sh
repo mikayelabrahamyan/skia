@@ -8,7 +8,7 @@ set -ex
 
 # Navigate to SKIA_HOME from where this file is located.
 BASE_DIR=`cd $(dirname ${BASH_SOURCE[0]}) && pwd`
-pushd $BASE_DIR/../..
+cd ../../
 ./bin/fetch-gn
 
 IS_OFFICIAL_BUILD="true"
@@ -111,14 +111,14 @@ if [[ $@ == *no_font* ]]; then
   echo "Omitting the built-in font(s), font manager and all code dealing with fonts"
   ENABLE_FONT="false"
   ENABLE_EMBEDDED_FONT="false"
-  GN_FONT+="skia_enable_fontmgr_custom_embedded=false skia_enable_fontmgr_custom_empty=false "
+  GN_FONT="${GN_FONT} skia_enable_fontmgr_custom_embedded=false skia_enable_fontmgr_custom_empty=false "
 else
   if [[ $@ == *no_embedded_font* ]]; then
     echo "Omitting the built-in font(s)"
     ENABLE_EMBEDDED_FONT="false"
   fi
   # Generate the font's binary file (which is covered by .gitignore)
-  GN_FONT+="skia_enable_fontmgr_custom_embedded=true skia_enable_fontmgr_custom_empty=true "
+  GN_FONT="${GN_FONT} skia_enable_fontmgr_custom_embedded=true skia_enable_fontmgr_custom_empty=true "
 fi
 
 if [[ $@ == *no_woff2* ]]; then
@@ -263,4 +263,4 @@ echo "Compiling"
   skia_canvaskit_enable_webgl=${ENABLE_WEBGL} \
   skia_canvaskit_enable_webgpu=${ENABLE_WEBGPU}"
 
-${NINJA} -C ${BUILD_DIR} canvaskit.js
+${NINJA} -C ${BUILD_DIR} canvaskit

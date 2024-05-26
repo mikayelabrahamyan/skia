@@ -147,8 +147,17 @@ skia_wasm_lib("canvaskit") {
       "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
     ]
   }
-
-  ldflags = []
+ 
+  cflags = [
+    "-sSHARED_MEMORY=1",
+    "-fwasm-exceptions",
+  ]
+  ldflags = [
+    "-sSHARED_MEMORY=1",
+    "-pthread",
+    "-fwasm-exceptions",
+  ]
+  
   if (is_debug) {
     ldflags += [
       "-O0",
@@ -156,17 +165,11 @@ skia_wasm_lib("canvaskit") {
       "-sASSERTIONS=1",
       "-sGL_ASSERTIONS=1",
       "-g3",
-      "--pre-js",
-      rebase_path("debug.js"),
     ]
   } else {
-    externs_path = rebase_path("externs.js")
     ldflags += [
       "-Oz",
       "--closure=1",
-      "--pre-js",
-      rebase_path("release.js"),
-      "--closure-args=--externs=$externs_path",
     ]
   }
   if (skia_canvaskit_profile_build) {
@@ -179,10 +182,6 @@ skia_wasm_lib("canvaskit") {
 
   if (skia_canvaskit_enable_webgpu) {
     ldflags += [
-      "--pre-js",
-      rebase_path("cpu.js"),
-      "--pre-js",
-      rebase_path("webgpu.js"),
       "-sUSE_WEBGL2=0",
       "-sUSE_WEBGPU=1",
       "-sASYNCIFY",
@@ -196,139 +195,21 @@ skia_wasm_lib("canvaskit") {
   } else if (skia_canvaskit_enable_webgl) {
     ldflags += [
       "-lGL",
-      "--pre-js",
-      rebase_path("cpu.js"),
-      "--pre-js",
-      rebase_path("webgl.js"),
       "-sUSE_WEBGL2=1",
       "-sMAX_WEBGL_VERSION=2",
     ]
   } else {
     ldflags += [
-      "--pre-js",
-      rebase_path("cpu.js"),
       "-sUSE_WEBGL2=0",
     ]
   }
 
   ldflags += [
-    "-std=c++17",
-    "--bind",
-    "--no-entry",
-    "--pre-js",
-    rebase_path("preamble.js"),
-    "--pre-js",
-    rebase_path("color.js"),
-    "--pre-js",
-    rebase_path("memory.js"),
-    "--pre-js",
-    rebase_path("util.js"),
-    "--pre-js",
-    rebase_path("interface.js"),
+    "-std=c++20",
   ]
 
-  if (skia_canvaskit_enable_matrix_helper) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("matrix.js"),
-    ]
-  }
 
-  ldflags += [
-    "--pre-js",
-    rebase_path("paragraph.js"),
-  ]
 
-  if (skia_enable_skottie) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("skottie.js"),
-    ]
-  }
-
-  if (skia_canvaskit_enable_pathops) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("pathops.js"),
-    ]
-  }
-
-  if (skia_canvaskit_enable_font) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("font.js"),
-    ]
-  }
-
-  if (skia_canvaskit_enable_skp_serialization) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("skp.js"),
-    ]
-  }
-
-  if (skia_canvaskit_enable_rt_shader) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("rt_shader.js"),
-    ]
-  }
-
-  if (skia_canvaskit_enable_debugger) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("debugger.js"),
-    ]
-  }
-
-  if (skia_canvaskit_enable_canvas_bindings) {
-    ldflags += [
-      "--pre-js",
-      rebase_path("htmlcanvas/preamble.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/util.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/color.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/font.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/canvas2dcontext.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/htmlcanvas.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/htmlimage.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/imagedata.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/lineargradient.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/path2d.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/pattern.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/radialgradient.js"),
-      "--pre-js",
-      rebase_path("htmlcanvas/postamble.js"),
-    ]
-  }
-
-  ldflags += [
-    "--pre-js",
-    rebase_path("postamble.js"),
-    "-sALLOW_MEMORY_GROWTH",
-    "-sDISABLE_EXCEPTION_CATCHING",
-    "-sNODEJS_CATCH_EXIT=0",
-    "-sDYNAMIC_EXECUTION=0",
-    "-sEXPORT_NAME=CanvasKitInit",
-    "-sEXPORTED_FUNCTIONS=[_malloc,_free]",
-    "-sFORCE_FILESYSTEM=0",
-    "-sFILESYSTEM=0",
-    "-sMODULARIZE",
-    "-sNO_EXIT_RUNTIME=1",
-    "-sINITIAL_MEMORY=128MB",
-    "-sWASM",
-    "-sSTRICT=1",
-  ]
 
   defines = [
     "SK_FORCE_8_BYTE_ALIGNMENT",

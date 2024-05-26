@@ -1,16 +1,3 @@
 python3 tools/git-sync-deps 
 tools/install_dependencies.sh
-source "/workspaces/skia/third_party/externals/emsdk/emsdk_env.sh"
-sh gen_cmake.sh 
-cmake out/config/CMakeLists.txt -DCMAKE_TOOLCHAIN_FILE=/workspaces/skia/third_party/externals/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
-(cd out/config && cmake --build .)
-
-
-
-template("skia_static_library") {
-  skia_target(target_name) {
-    assert(!defined(configs), "No set_defaults(skia_target)")
-    _skia_target_type = "static_library"
-    forward_variables_from(invoker, "*")
-  }
-}
+(cd modules/canvaskit/ && sh compile.sh)

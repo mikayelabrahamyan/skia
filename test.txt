@@ -1,3 +1,4 @@
 python3 tools/git-sync-deps 
 tools/install_dependencies.sh
 (cd modules/canvaskit/ && sh compile.sh)
+python3 create_archive.py

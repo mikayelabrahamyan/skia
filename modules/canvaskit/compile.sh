@@ -229,7 +229,7 @@ echo "Compiling"
   skia_use_system_libjpeg_turbo=false \
   skia_use_system_libpng=false \
   skia_use_system_libwebp=false \
-  skia_use_system_zlib=false\
+  skia_use_system_zlib=false \
   skia_use_vulkan=false \
   skia_use_wuffs=true \
   skia_use_zlib=true \
@@ -261,6 +261,9 @@ echo "Compiling"
   skia_canvaskit_enable_debugger=${DEBUGGER_ENABLED} \
   skia_canvaskit_enable_paragraph=${ENABLE_PARAGRAPH} \
   skia_canvaskit_enable_webgl=${ENABLE_WEBGL} \
-  skia_canvaskit_enable_webgpu=${ENABLE_WEBGPU}"
+  skia_canvaskit_enable_webgpu=${ENABLE_WEBGPU} \
+  \
+  extra_cflags=[\"-sSHARED_MEMORY=1\", \"-fwasm-exceptions\"] \
+  extra_ldflags=[\"-sSHARED_MEMORY=1\", \"-pthread\", \"-fwasm-exceptions\"]"
 
 ${NINJA} -C ${BUILD_DIR} canvaskit

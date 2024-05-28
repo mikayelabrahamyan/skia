@@ -263,7 +263,9 @@ echo "Compiling"
   skia_canvaskit_enable_webgl=${ENABLE_WEBGL} \
   skia_canvaskit_enable_webgpu=${ENABLE_WEBGPU} \
   \
-  extra_cflags=[\"-sSHARED_MEMORY=1\", \"-fwasm-exceptions\"] \
-  extra_ldflags=[\"-sSHARED_MEMORY=1\", \"-pthread\", \"-fwasm-exceptions\"]"
+  extra_cflags=[\"-sSHARED_MEMORY=1\", \"-fwasm-exceptions\", \"-sSUPPORT_LONGJMP=wasm\"] \
+  extra_ldflags=[\"-sSHARED_MEMORY=1\", \"-pthread\", \"-fwasm-exceptions\", \"-sSUPPORT_LONGJMP=wasm\"]"
 
-${NINJA} -C ${BUILD_DIR} canvaskit
+${NINJA} -C ${BUILD_DIR} canvaskit 
+
+# ${NINJA} -C ${BUILD_DIR} canvaskit -v

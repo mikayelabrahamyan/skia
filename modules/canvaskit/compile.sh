@@ -74,15 +74,6 @@ if [[ $@ == *no_skottie* ]]; then
   ENABLE_SKOTTIE="false"
 fi
 
-INCLUDE_VIEWER="false"
-USE_EXPAT="false"
-if [[ $@ == *viewer* ]]; then
-  echo "Including viewer"
-  INCLUDE_VIEWER="true"
-  USE_EXPAT="true"
-  IS_OFFICIAL_BUILD="false"
-fi
-
 ENABLE_PATHOPS="true"
 if [[ $@ == *no_pathops* ]] ; then
   # This saves about 2kb compressed.
@@ -210,7 +201,8 @@ echo "Compiling"
   skia_use_dawn=${ENABLE_WEBGPU} \
   skia_use_webgl=${ENABLE_WEBGL} \
   skia_use_webgpu=${ENABLE_WEBGPU} \
-  skia_use_expat=${USE_EXPAT} \
+  skia_use_expat=true \
+  skia_use_system_expat=false \
   skia_use_fontconfig=false \
   skia_use_freetype=true \
   skia_use_libheif=false \
@@ -244,24 +236,8 @@ echo "Compiling"
   \
   skia_enable_skshaper=true \
   skia_enable_skparagraph=true \
-  skia_enable_pdf=false \
-  skia_canvaskit_enable_rt_shader=true \
-  skia_canvaskit_force_tracing=${FORCE_TRACING} \
-  skia_canvaskit_profile_build=${PROFILE_BUILD} \
-  skia_canvaskit_enable_skp_serialization=${SERIALIZE_SKP} \
-  skia_canvaskit_enable_effects_deserialization=${DESERIALIZE_EFFECTS} \
-  skia_canvaskit_include_viewer=${INCLUDE_VIEWER} \
-  skia_canvaskit_enable_pathops=${ENABLE_PATHOPS} \
-  skia_canvaskit_enable_matrix_helper=${ENABLE_MATRIX} \
-  skia_canvaskit_enable_canvas_bindings=${ENABLE_CANVAS} \
-  skia_canvaskit_enable_font=${ENABLE_FONT} \
-  skia_canvaskit_enable_embedded_font=${ENABLE_EMBEDDED_FONT} \
-  skia_canvaskit_enable_alias_font=${ENABLE_ALIAS_FONT} \
-  skia_canvaskit_legacy_draw_vertices_blend_mode=${LEGACY_DRAW_VERTICES} \
-  skia_canvaskit_enable_debugger=${DEBUGGER_ENABLED} \
-  skia_canvaskit_enable_paragraph=${ENABLE_PARAGRAPH} \
-  skia_canvaskit_enable_webgl=${ENABLE_WEBGL} \
-  skia_canvaskit_enable_webgpu=${ENABLE_WEBGPU} \
+  skia_enable_pdf=true \
+  skia_enable_svg=true \
   \
   extra_cflags=[\"-sSHARED_MEMORY=1\", \"-fwasm-exceptions\", \"-sSUPPORT_LONGJMP=wasm\"] \
   extra_ldflags=[\"-sSHARED_MEMORY=1\", \"-pthread\", \"-fwasm-exceptions\", \"-sSUPPORT_LONGJMP=wasm\"]"
